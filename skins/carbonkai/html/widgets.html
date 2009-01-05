@@ -1,0 +1,300 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<script type="text/javascript" src="switchcontent.js" ></script>
+
+<script type="text/javascript" src="switchicon.js"> </script>
+<script type="text/javascript" src="http://videobox-lb.sourceforge.net/js/mootools.js"></script>
+<script type="text/javascript" src="http://videobox-lb.sourceforge.net/js/swfobject.js"></script>
+<link rel="stylesheet" href="http://videobox-lb.sourceforge.net/css/videobox.css" type="text/css" media="screen" />
+<script type="text/javascript" src="http://videobox-lb.sourceforge.net/js/videobox.js"></script>  
+
+<style type="text/css">
+/***********************************************
+* Switch Content script II (icon based)- (c) Dynamic Drive (www.dynamicdrive.com)
+* Requires switchcontent.js and included before this file!
+* Visit http://www.dynamicdrive.com/ for full source code
+***********************************************/
+
+
+
+
+.dhtmlgoodies_question{	/* Styling question */
+	/* Start layout CSS */
+	color:#FFF;
+	font-family:"Arial", Helvetica, sans-serif;
+	font-size:.9em;
+	background:#000000 url(../img/menuBG.png) repeat;
+	width:295px;
+	margin-bottom:2px;
+	margin-top:2px;
+	padding-left:2px;
+	
+	height:20px;
+	/* End layout CSS */
+	
+	overflow:hidden;
+	cursor:pointer;
+}
+.dhtmlgoodies_answer{	/* Parent box of slide down content */
+	/* Start layout CSS */
+	border:1px solid #317082;
+	background-color:#E2EBED;
+	width:295px;
+	
+	/* End layout CSS */
+	
+	visibility:hidden;
+	height:0px;
+	overflow:hidden;
+	position:relative;
+
+}
+.dhtmlgoodies_answer_content{	/* Content that is slided down */
+	padding:1px;
+	font-size:0.9em;	
+	position:relative;
+}
+
+</style>
+<script type="text/javascript">
+/************************************************************************************************************
+(C) www.dhtmlgoodies.com, November 2005
+
+This is a script from www.dhtmlgoodies.com. You will find this and a lot of other scripts at our website.	
+
+Terms of use:
+You are free to use this script as long as the copyright message is kept intact. However, you may not
+redistribute, sell or repost it without our permission.
+
+Thank you!
+
+www.dhtmlgoodies.com
+Alf Magne Kalleland
+
+************************************************************************************************************/
+
+var dhtmlgoodies_slideSpeed = 10;	// Higher value = faster
+var dhtmlgoodies_timer = 10;	// Lower value = faster
+
+var objectIdToSlideDown = false;
+var dhtmlgoodies_activeId = false;
+var dhtmlgoodies_slideInProgress = false;
+function showHideContent(e,inputId)
+{
+	if(dhtmlgoodies_slideInProgress)return;
+	dhtmlgoodies_slideInProgress = true;
+	if(!inputId)inputId = this.id;
+	inputId = inputId + '';
+	var numericId = inputId.replace(/[^0-9]/g,'');
+	var answerDiv = document.getElementById('dhtmlgoodies_a' + numericId);
+
+	objectIdToSlideDown = false;
+	
+	if(!answerDiv.style.display || answerDiv.style.display=='none'){		
+		if(dhtmlgoodies_activeId &&  dhtmlgoodies_activeId!=numericId){			
+			objectIdToSlideDown = numericId;
+			slideContent(dhtmlgoodies_activeId,(dhtmlgoodies_slideSpeed*-1));
+		}else{
+			
+			answerDiv.style.display='block';
+			answerDiv.style.visibility = 'visible';
+			
+			slideContent(numericId,dhtmlgoodies_slideSpeed);
+		}
+	}else{
+		slideContent(numericId,(dhtmlgoodies_slideSpeed*-1));
+		dhtmlgoodies_activeId = false;
+	}	
+}
+
+function slideContent(inputId,direction)
+{
+	
+	var obj =document.getElementById('dhtmlgoodies_a' + inputId);
+	var contentObj = document.getElementById('dhtmlgoodies_ac' + inputId);
+	height = obj.clientHeight;
+	if(height==0)height = obj.offsetHeight;
+	height = height + direction;
+	rerunFunction = true;
+	if(height>contentObj.offsetHeight){
+		height = contentObj.offsetHeight;
+		rerunFunction = false;
+	}
+	if(height<=1){
+		height = 1;
+		rerunFunction = false;
+	}
+
+	obj.style.height = height + 'px';
+	var topPos = height - contentObj.offsetHeight;
+	if(topPos>0)topPos=0;
+	contentObj.style.top = topPos + 'px';
+	if(rerunFunction){
+		setTimeout('slideContent(' + inputId + ',' + direction + ')',dhtmlgoodies_timer);
+	}else{
+		if(height<=1){
+			obj.style.display='none'; 
+			if(objectIdToSlideDown && objectIdToSlideDown!=inputId){
+				document.getElementById('dhtmlgoodies_a' + objectIdToSlideDown).style.display='block';
+				document.getElementById('dhtmlgoodies_a' + objectIdToSlideDown).style.visibility='visible';
+				slideContent(objectIdToSlideDown,dhtmlgoodies_slideSpeed);				
+			}else{
+				dhtmlgoodies_slideInProgress = false;
+			}
+		}else{
+			dhtmlgoodies_activeId = inputId;
+			dhtmlgoodies_slideInProgress = false;
+		}
+	}
+}
+
+
+
+function initShowHideDivs()
+{
+	var divs = document.getElementsByTagName('DIV');
+	var divCounter = 1;
+	for(var no=0;no<divs.length;no++){
+		if(divs[no].className=='dhtmlgoodies_question'){
+			divs[no].onclick = showHideContent;
+			divs[no].id = 'dhtmlgoodies_q'+divCounter;
+			var answer = divs[no].nextSibling;
+			while(answer && answer.tagName!='DIV'){
+				answer = answer.nextSibling;
+			}
+			answer.id = 'dhtmlgoodies_a'+divCounter;	
+			contentDiv = answer.getElementsByTagName('DIV')[0];
+			contentDiv.style.top = 0 - contentDiv.offsetHeight + 'px'; 	
+			contentDiv.className='dhtmlgoodies_answer_content';
+			contentDiv.id = 'dhtmlgoodies_ac' + divCounter;
+			answer.style.display='none';
+			answer.style.height='1px';
+			divCounter++;
+		}		
+	}	
+}
+window.onload = initShowHideDivs;
+</script>
+
+<style type="text/css">
+/*Default style for SPAN icons. Edit if desired: */
+
+.iconspan{
+float: right;
+margin: 3px;
+cursor:hand;
+cursor:pointer;
+font-weight: bold;
+}
+
+/*CSS used to style the examples. Remove if desired: */
+
+.eg-bar{
+background: #333 url(../img/menu.gif) repeat;
+font-weight: bold;
+border: 1px solid black;
+padding: 3px;
+color:#fff;
+font-family:Arial, Helvetica, sans-serif;
+}
+
+div.eg-bar{
+width: 295px;
+}
+
+.icongroup1{
+width: 295px;
+}
+
+body {
+	background-color: #333333;
+	background-image: url(../img/iframebg.png);
+	background-repeat: repeat-x;
+	
+}
+#feed {
+padding-top: 5px;
+}
+</style>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+</head>
+
+<body>
+<table width="578" border="0">
+ <tr><td width="300">
+<div class="eg-bar"><span id="faq1-title" class="iconspan"><img src="minus.gif" /></span>Xlink Kai Halo2 Videos</div>
+
+ 
+    
+<div id="faq1" class="icongroup1" align="center">
+<script type="text/javascript" src="http://cdn.widgetserver.com/syndication/subscriber/InsertWidget.js"></script><script>if (WIDGETBOX) WIDGETBOX.renderWidget('d5fd8553-407c-472c-a604-9b45d7241065');</script><noscript>Get the <a href="http://www.widgetbox.com/widget/rssscroller">RSS Scroller</a> widget and many other <a href="http://www.widgetbox.com/">great free widgets</a> at <a href="http://www.widgetbox.com">Widgetbox</a>!</noscript>
+
+</div>
+<div class="eg-bar""><span id="faq2-title" class="iconspan"><img src="minus.gif" /></span>Xlink Kai Forums</div>
+<div id="faq2" class="icongroup1" align="center">
+<script type="text/javascript" src="http://cdn.widgetserver.com/syndication/subscriber/InsertWidget.js"></script><script>if (WIDGETBOX) WIDGETBOX.renderWidget('38bf1627-d03d-4297-be82-f6f79676f2e5');</script><noscript>Get the <a href="http://www.widgetbox.com/widget/rssscroller">RSS Scroller</a> widget and many other <a href="http://www.widgetbox.com/">great free widgets</a> at <a href="http://www.widgetbox.com">Widgetbox</a>!</noscript>
+</div>
+<div class="eg-bar""><span id="faq3-title" class="iconspan"><img src="minus.gif" /></span>Facebook Minisite</div>
+<div id="faq3" class="icongroup1" align="center">
+ <script type="text/javascript" src="http://cdn.widgetserver.com/syndication/subscriber/InsertWidget.js"></script><script>if (WIDGETBOX) WIDGETBOX.renderWidget('f552a537-e783-4ada-b109-aaa15a86a728');</script><noscript>Get the <a href="http://www.widgetbox.com/widget/facebookminisite">Facebook Minisite</a> widget and many other <a href="http://www.widgetbox.com/">great free widgets</a> at <a href="http://www.widgetbox.com">Widgetbox</a>!</noscript>
+ </div>
+ <div class="eg-bar""><span id="faq6-title" class="iconspan"><img src="minus.gif" /></span>HD Movie Trailers</div>
+<div id="faq6" class="icongroup1" align="center">
+<a href="http://www.heavy.com/ve/f15ebf062712cb56f407c4a2e7cbda95" rel="vidbox 512 382" title="CarbonKai HD Movie Trailers."><img src="http://farm4.static.flickr.com/3227/3136586174_354f75e265_o.jpg"></a>
+</div>
+<div class="eg-bar""><span id="faq4-title" class="iconspan"><img src="minus.gif" /></span>YouTube TV</div>
+<div id="faq4" class="icongroup1" align="center">
+ <p width="100%" align="center"><script type="text/javascript" src="http://cdn.widgetserver.com/syndication/subscriber/InsertWidget.js"></script><script>if (WIDGETBOX) WIDGETBOX.renderWidget('3c1a5045-b3a8-4f7b-afc9-8733e63195ca');</script><noscript>Get the <a href="http://www.widgetbox.com/widget/youtubetv2">YouTube TV 2.0</a> widget and many other <a href="http://www.widgetbox.com/">great free widgets</a> at <a href="http://www.widgetbox.com">Widgetbox</a>!</noscript>
+ </div>
+ 
+ 
+ 
+ 
+ <div class="eg-bar""><span id="faq5-title" class="iconspan"><img src="minus.gif" /></span>Music Radio</div>
+<div id="faq5" class="icongroup1" align="center">
+<div class="dhtmlgoodies_question">Modern Rock Last.fm Radio</div>
+<div class="dhtmlgoodies_answer">
+	<div>
+		<style type="text/css">table.lfmWidgetradio_c0bfa19de997ccb40a06efa57950de2d td {margin:0 !important;padding:0 !important;border:0 !important;}table.lfmWidgetradio_c0bfa19de997ccb40a06efa57950de2d tr.lfmHead a:hover {background:url(http://cdn.last.fm/widgets/images/en/header/radio/regular_black.png) no-repeat 0 0 !important;}table.lfmWidgetradio_c0bfa19de997ccb40a06efa57950de2d tr.lfmEmbed object {float:left;}table.lfmWidgetradio_c0bfa19de997ccb40a06efa57950de2d tr.lfmFoot td.lfmConfig a:hover {background:url(http://cdn.last.fm/widgets/images/en/footer/black_np.png) no-repeat 0px 0 !important;;}table.lfmWidgetradio_c0bfa19de997ccb40a06efa57950de2d tr.lfmFoot td.lfmView a:hover {background:url(http://cdn.last.fm/widgets/images/en/footer/black_np.png) no-repeat -85px 0 !important;}table.lfmWidgetradio_c0bfa19de997ccb40a06efa57950de2d tr.lfmFoot td.lfmPopup a:hover {background:url(http://cdn.last.fm/widgets/images/en/footer/black_np.png) no-repeat -159px 0 !important;}</style>
+<table class="lfmWidgetradio_c0bfa19de997ccb40a06efa57950de2d" cellpadding="0" cellspacing="0" border="0" style="width:184px;"><tr class="lfmHead"><td><a title="Modern rock Radio" href="http://www.last.fm/listen/globaltags/modern%20rock" target="_blank" style="display:block;overflow:hidden;height:20px;width:184px;background:url(http://cdn.last.fm/widgets/images/en/header/radio/regular_black.png) no-repeat 0 -20px;text-decoration:none;border:0;"></a></td></tr><tr class="lfmEmbed"><td><object type="application/x-shockwave-flash" data="http://cdn.last.fm/widgets/radio/22.swf" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,0,0" id="lfmEmbed_778283861" width="184" height="140"> <param name="movie" value="http://cdn.last.fm/widgets/radio/22.swf" /> <param name="flashvars" value="lfmMode=radio&amp;radioURL=globaltags%2Fmodern%2520rock&amp;title=Modern+rock+Radio&amp;theme=black&amp;lang=en&amp;widget_id=radio_c0bfa19de997ccb40a06efa57950de2d" /> <param name="allowScriptAccess" value="always" /> <param name="allowNetworking" value="all" /> <param name="allowFullScreen" value="true" /> <param name="quality" value="high" /> <param name="bgcolor" value="000000" /> <param name="wmode" value="transparent" /> <param name="menu" value="true" /> </object></td></tr><tr class="lfmFoot"><td style="background:url(http://cdn.last.fm/widgets/images/footer_bg/black.png) repeat-x 0 0;text-align:right;"><table cellspacing="0" cellpadding="0" border="0" style="width:184px;"><tr><td class="lfmConfig"><a href="http://www.last.fm/widgets/?url=globaltags%2Fmodern%2520rock&amp;colour=black&amp;size=regular&amp;autostart=0&amp;from=code&amp;widget=radio" title="Get your own widget" target="_blank" style="display:block;overflow:hidden;width:85px;height:20px;float:right;background:url(http://cdn.last.fm/widgets/images/en/footer/black_np.png) no-repeat 0px -20px;text-decoration:none;border:0;"></a></td><td class="lfmView" style="width:74px;"><a href="http://www.last.fm/" title="Visit Last.fm" target="_blank" style="display:block;overflow:hidden;width:74px;height:20px;background:url(http://cdn.last.fm/widgets/images/en/footer/black_np.png) no-repeat -85px -20px;text-decoration:none;border:0;"></a></td><td class="lfmPopup"style="width:25px;"><a href="http://www.last.fm/widgets/popup/?url=globaltags%2Fmodern%2520rock&amp;colour=black&amp;size=regular&amp;autostart=0&amp;from=code&amp;widget=radio&amp;resize=1" title="Load this radio in a pop up" target="_blank" style="display:block;overflow:hidden;width:25px;height:20px;background:url(http://cdn.last.fm/widgets/images/en/footer/black_np.png) no-repeat -159px -20px;text-decoration:none;border:0;" onclick="window.open(this.href + '&amp;resize=0','lfm_popup','height=240,width=234,resizable=yes,scrollbars=yes'); return false;"></a></td></tr></table></td></tr></table>
+
+	</div>
+</div>
+<div class="dhtmlgoodies_question">Hip-Hop Music Last.fm Radio</div>
+<div class="dhtmlgoodies_answer">
+	<div>
+		<style type="text/css">table.lfmWidgetradio_9e8cbad511a9071887bbc2f0fb7d5efc td {margin:0 !important;padding:0 !important;border:0 !important;}table.lfmWidgetradio_9e8cbad511a9071887bbc2f0fb7d5efc tr.lfmHead a:hover {background:url(http://cdn.last.fm/widgets/images/en/header/radio/regular_blue.png) no-repeat 0 0 !important;}table.lfmWidgetradio_9e8cbad511a9071887bbc2f0fb7d5efc tr.lfmEmbed object {float:left;}table.lfmWidgetradio_9e8cbad511a9071887bbc2f0fb7d5efc tr.lfmFoot td.lfmConfig a:hover {background:url(http://cdn.last.fm/widgets/images/en/footer/blue_np.png) no-repeat 0px 0 !important;;}table.lfmWidgetradio_9e8cbad511a9071887bbc2f0fb7d5efc tr.lfmFoot td.lfmView a:hover {background:url(http://cdn.last.fm/widgets/images/en/footer/blue_np.png) no-repeat -85px 0 !important;}table.lfmWidgetradio_9e8cbad511a9071887bbc2f0fb7d5efc tr.lfmFoot td.lfmPopup a:hover {background:url(http://cdn.last.fm/widgets/images/en/footer/blue_np.png) no-repeat -159px 0 !important;}</style>
+<table class="lfmWidgetradio_9e8cbad511a9071887bbc2f0fb7d5efc" cellpadding="0" cellspacing="0" border="0" style="width:184px;"><tr class="lfmHead"><td><a title="Hip-hop Radio" href="http://www.last.fm/listen/globaltags/Hip-Hop" target="_blank" style="display:block;overflow:hidden;height:20px;width:184px;background:url(http://cdn.last.fm/widgets/images/en/header/radio/regular_blue.png) no-repeat 0 -20px;text-decoration:none;border:0;"></a></td></tr><tr class="lfmEmbed"><td><object type="application/x-shockwave-flash" data="http://cdn.last.fm/widgets/radio/22.swf" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,0,0" id="lfmEmbed_1394233768" width="184" height="140"> <param name="movie" value="http://cdn.last.fm/widgets/radio/22.swf" /> <param name="flashvars" value="lfmMode=radio&amp;radioURL=globaltags%2FHip-Hop&amp;title=Hip-hop+Radio&amp;theme=blue&amp;lang=en&amp;widget_id=radio_9e8cbad511a9071887bbc2f0fb7d5efc" /> <param name="allowScriptAccess" value="always" /> <param name="allowNetworking" value="all" /> <param name="allowFullScreen" value="true" /> <param name="quality" value="high" /> <param name="bgcolor" value="6598cd" /> <param name="wmode" value="transparent" /> <param name="menu" value="true" /> </object></td></tr><tr class="lfmFoot"><td style="background:url(http://cdn.last.fm/widgets/images/footer_bg/blue.png) repeat-x 0 0;text-align:right;"><table cellspacing="0" cellpadding="0" border="0" style="width:184px;"><tr><td class="lfmConfig"><a href="http://www.last.fm/widgets/?url=globaltags%2FHip-Hop&amp;colour=blue&amp;size=regular&amp;autostart=0&amp;from=code&amp;widget=radio" title="Get your own widget" target="_blank" style="display:block;overflow:hidden;width:85px;height:20px;float:right;background:url(http://cdn.last.fm/widgets/images/en/footer/blue_np.png) no-repeat 0px -20px;text-decoration:none;border:0;"></a></td><td class="lfmView" style="width:74px;"><a href="http://www.last.fm/" title="Visit Last.fm" target="_blank" style="display:block;overflow:hidden;width:74px;height:20px;background:url(http://cdn.last.fm/widgets/images/en/footer/blue_np.png) no-repeat -85px -20px;text-decoration:none;border:0;"></a></td><td class="lfmPopup"style="width:25px;"><a href="http://www.last.fm/widgets/popup/?url=globaltags%2FHip-Hop&amp;colour=blue&amp;size=regular&amp;autostart=0&amp;from=code&amp;widget=radio&amp;resize=1" title="Load this radio in a pop up" target="_blank" style="display:block;overflow:hidden;width:25px;height:20px;background:url(http://cdn.last.fm/widgets/images/en/footer/blue_np.png) no-repeat -159px -20px;text-decoration:none;border:0;" onclick="window.open(this.href + '&amp;resize=0','lfm_popup','height=240,width=234,resizable=yes,scrollbars=yes'); return false;"></a></td></tr></table></td></tr></table>
+
+	</div>
+</div>
+<div class="dhtmlgoodies_question">Reggaeton Music Last.fm Radio</div>
+<div class="dhtmlgoodies_answer">
+	<div>
+		<style type="text/css">table.lfmWidgetradio_83c55333cc105d94b972e3627554bb55 td {margin:0 !important;padding:0 !important;border:0 !important;}table.lfmWidgetradio_83c55333cc105d94b972e3627554bb55 tr.lfmHead a:hover {background:url(http://cdn.last.fm/widgets/images/en/header/radio/regular_black.png) no-repeat 0 0 !important;}table.lfmWidgetradio_83c55333cc105d94b972e3627554bb55 tr.lfmEmbed object {float:left;}table.lfmWidgetradio_83c55333cc105d94b972e3627554bb55 tr.lfmFoot td.lfmConfig a:hover {background:url(http://cdn.last.fm/widgets/images/en/footer/black_np.png) no-repeat 0px 0 !important;;}table.lfmWidgetradio_83c55333cc105d94b972e3627554bb55 tr.lfmFoot td.lfmView a:hover {background:url(http://cdn.last.fm/widgets/images/en/footer/black_np.png) no-repeat -85px 0 !important;}table.lfmWidgetradio_83c55333cc105d94b972e3627554bb55 tr.lfmFoot td.lfmPopup a:hover {background:url(http://cdn.last.fm/widgets/images/en/footer/black_np.png) no-repeat -159px 0 !important;}</style>
+<table class="lfmWidgetradio_83c55333cc105d94b972e3627554bb55" cellpadding="0" cellspacing="0" border="0" style="width:184px;"><tr class="lfmHead"><td><a title="Reggaeton Radio" href="http://www.last.fm/listen/globaltags/Reggaeton" target="_blank" style="display:block;overflow:hidden;height:20px;width:184px;background:url(http://cdn.last.fm/widgets/images/en/header/radio/regular_black.png) no-repeat 0 -20px;text-decoration:none;border:0;"></a></td></tr><tr class="lfmEmbed"><td><object type="application/x-shockwave-flash" data="http://cdn.last.fm/widgets/radio/22.swf" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,0,0" id="lfmEmbed_2093565793" width="184" height="140"> <param name="movie" value="http://cdn.last.fm/widgets/radio/22.swf" /> <param name="flashvars" value="lfmMode=radio&amp;radioURL=globaltags%2FReggaeton&amp;title=Reggaeton+Radio&amp;theme=black&amp;lang=en&amp;widget_id=radio_83c55333cc105d94b972e3627554bb55" /> <param name="allowScriptAccess" value="always" /> <param name="allowNetworking" value="all" /> <param name="allowFullScreen" value="true" /> <param name="quality" value="high" /> <param name="bgcolor" value="000000" /> <param name="wmode" value="transparent" /> <param name="menu" value="true" /> </object></td></tr><tr class="lfmFoot"><td style="background:url(http://cdn.last.fm/widgets/images/footer_bg/black.png) repeat-x 0 0;text-align:right;"><table cellspacing="0" cellpadding="0" border="0" style="width:184px;"><tr><td class="lfmConfig"><a href="http://www.last.fm/widgets/?url=globaltags%2FReggaeton&amp;colour=black&amp;size=regular&amp;autostart=0&amp;from=code&amp;widget=radio" title="Get your own widget" target="_blank" style="display:block;overflow:hidden;width:85px;height:20px;float:right;background:url(http://cdn.last.fm/widgets/images/en/footer/black_np.png) no-repeat 0px -20px;text-decoration:none;border:0;"></a></td><td class="lfmView" style="width:74px;"><a href="http://www.last.fm/" title="Visit Last.fm" target="_blank" style="display:block;overflow:hidden;width:74px;height:20px;background:url(http://cdn.last.fm/widgets/images/en/footer/black_np.png) no-repeat -85px -20px;text-decoration:none;border:0;"></a></td><td class="lfmPopup"style="width:25px;"><a href="http://www.last.fm/widgets/popup/?url=globaltags%2FReggaeton&amp;colour=black&amp;size=regular&amp;autostart=0&amp;from=code&amp;widget=radio&amp;resize=1" title="Load this radio in a pop up" target="_blank" style="display:block;overflow:hidden;width:25px;height:20px;background:url(http://cdn.last.fm/widgets/images/en/footer/black_np.png) no-repeat -159px -20px;text-decoration:none;border:0;" onclick="window.open(this.href + '&amp;resize=0','lfm_popup','height=240,width=234,resizable=yes,scrollbars=yes'); return false;"></a></td></tr></table></td></tr></table>
+
+	</div>
+</div>
+
+
+ </div>
+
+<script type="text/javascript">
+
+var faq=new switchicon("icongroup1", "div") //Limit scanning of switch contents to just "div" elements
+faq.setHeader('[Hide]', '[Show]') //Set header HTML
+faq.collapsePrevious(true) //Allow only 1 content open at any time
+faq.setPersist(false) //No persistence enabled
+faq.defaultExpanded(5)
+faq.init()
+
+</script>
+</td>
+    <td width="268"><div id="feed"><script type="text/javascript" src="http://cdn.widgetserver.com/syndication/subscriber/InsertWidget.js"></script><script>if (WIDGETBOX) WIDGETBOX.renderWidget('819afc2f-6ff2-41de-8ec2-484f8f2078e9');</script><noscript>Get the <a href="http://www.widgetbox.com/widget/rssscroller">RSS Scroller</a> widget and many other <a href="http://www.widgetbox.com/">great free widgets</a> at <a href="http://www.widgetbox.com">Widgetbox</a>!</noscript></div></td>
+  </tr>
+</table>
+</body>
+</html>

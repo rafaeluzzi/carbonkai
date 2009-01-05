@@ -1,0 +1,317 @@
+
+/* =============================================
+// XLinkKai webUI skin.css
+// Author XTag : (KHB)GhOsTMaTa
+// -------------------------------------------*/
+
+td.time
+{
+	width: 50px;
+	font-size:11px;
+}
+
+td.chatUsername
+{
+	width: 112px;
+}
+
+#msg
+{
+	ime-mode:active;
+}
+div#div1
+{
+position:absolute;
+z-index: 1;
+top:42px ;
+right:236px ;
+display: none;
+width:575px;
+height:460px;
+color:#FFFFFF;
+
+
+} 
+
+
+
+
+#btnNavFav, #btnChat, #btnArenas, #btnDebug, #btnMetrics, #btnPlayChat, #btnPlayArena, #btnLogin, .blackBtn,#btnNavCont, #btnNavNav
+{
+	background: #333 url(/skin/img/menu.gif) ;
+	border: 1.5px solid #000;
+	color: #fff;
+
+	font-weight: bold;
+	cursor: pointer;
+	height: 23px;
+font-size: 14px;
+font-family: Arial,Helvetica,sans-serif;
+}
+#btnNavCont, #btnNavNav, #btnNavFav
+{
+	
+	
+	margin-top: 10px;
+border: 2px solid #333;
+
+}
+#chat
+{
+	height: 455px;
+	overflow: auto;
+	background: #3E5468;
+      color: white;            font-family: Arial,Helvetica,sans-serif;      font-size: 12px;
+}
+#chat > div
+{
+	border-top: 1px solid #627C98;  
+   padding: 1px;
+      
+	clear: left;
+}
+#msg
+{
+	width: 400px;
+	border: 1px solid #627C98;
+         background-color: #333 ;
+	padding: 3px;
+	float: left;
+color: #ffffff;
+ height: 20px !important;
+}
+.topGreen
+{
+	background: #000 url(/skin/img/menuBG.png) ;
+	width: auto;
+	height: 27px;
+	overflow: hidden;
+	padding-top: 10px;
+	display: block;
+	color: #fff;
+	font-size: 12px;
+	font-weight: bold;
+	text-align: center;
+
+}
+#panelCenter
+{
+border: none !important;
+}
+#menu {
+background: #333 url(/skin/img/menuBGCF.png) ;
+}
+.submenu {
+   background: #333 url(/skin/img/menuBGCF.png) ;
+   color: #fff;
+}
+
+#arenaCommands
+{
+color: #fff;
+}
+
+.contactContainer
+{      
+	background:#3E5468 url(/skin/img/menuBGCFG.png);
+color: #fff;
+}
+#chatContainer
+{
+background: #3E5468;
+margin-top: 115px;
+}
+.playerUser, .playerUserOver
+{
+	background: #000 url(/skin/img/menuBGCF.png);
+color: #fff;
+}
+.playerUserOver
+{
+	background: #aaa;
+}
+#panelLeft,#panelCenter,#panelRight
+{
+background:#000 !important;
+}
+
+.playerMod, .playerModOver
+{
+  background: #66f url(/skin/img/menug.gif);
+  color: #fff;
+
+}
+.playerModOver
+{
+	background: #000;
+}
+.playerAdmin, .playerAdminOver
+{
+	background: #fc6 url(/skin/img/menugadmin.gif);
+}
+.playerAdminOver
+{
+	background: #000;
+color: #fff;
+}
+a:link {
+color: #ccc !important;
+text-decoration:none;
+}
+A:visited
+{
+	text-decoration: none;
+	color: #ccc;
+}
+#extracontent
+{
+width:580px;
+height:460px;
+border:5px solid #111;
+}
+#kaiVectors, #kaiFavs
+{
+ /*background: #ccc url(/skin/img/iframebg.png);*/
+}
+#allPlayers{
+/*background: #ccc url(/skin/img/iframebg.png);*/
+/*height: 326px !important;*/
+}
+.chatMod
+{
+	color: #94e3fa;
+}
+
+.chatAdmin
+{
+	color: #fed58e;
+}
+.pmChatTitle {
+background: #333 url(/skin/img/menuBGC.png);
+color: #fff
+}
+.pmChatBox {
+background: #3E5468;
+      color: white;            font-family: Arial,Helvetica,sans-serif;      font-size: 12px;
+}
+.pmClose{
+background: #000 url(/img/01.png) no-repeat scroll 5px;
+}
+.pmInputBox {
+background-color: #444;
+}
+#panelInfo {
+background: #333 url(/skin/img/iframebg.png);
+}
+#panelInfoContent {
+border:3px solid #0099ff;
+}
+#loginBox, #errorBox {
+background:#333 url(/skin/img/iframebg.png );
+border:3px solid #0099ff;
+font-family: Arial;
+font-size: 17px;
+}
+#btnArenas
+{
+visibility:hidden;
+display:none;
+}
+#contacts
+{
+	
+	width: 100%;
+	overflow: auto;
+	font-size: 12px;
+}
+#kaiFavs
+{
+	/*height: 385px !important;*/
+	width: 195px;
+	display:block !important;
+	overflow:auto;
+	}
+#kaiVectors
+{
+    width: 195px;
+	/*height: 385px !important;*/
+	}
+	#panelLeft {
+	
+	}
+	.submenu2 {
+      color: #fff;
+	  
+   height:inherit;
+   
+}
+#btnArenas2
+{ 
+margin-top: 10px; 
+margin-left: 40px;
+ 
+ 
+ }
+ #headerKaiVectors
+ {
+ color:#000000;
+ }
+ #logo {
+background-image:url(/skin/img/carbonkailogo.png) !important;
+width: 94px !important;
+}
+
+#kaiFavs {
+display:block !important;
+height:65px !important;
+line-height:18px;
+overflow-x:auto !important;
+overflow-y:hidden;
+width:125% !important;
+}
+	
+#favtittle {
+background:transparent url(img/menuBG.png) repeat-x scroll 0 0;
+overflow-x:auto !important;
+overflow-y:hidden !important;
+width:999px;
+color:#CCC;
+padding: 5px;
+}
+	.kaiFavContainer {
+	float: left !important;
+	margin-left: 2px;
+	border:#555 solid 2px !important;
+	color:#FFF !important;
+	background-color:#333 !important;
+	opacity: 1.0 !important;
+	MozOpacity: 1.0 !important;
+	KhtmlOpacity: 1.0 !important;
+	filter: alpha(opacity=100) !important;
+
+}
+#playerfinderbtn {
+	position:absolute;
+	top: 59px;
+}
+#arenaCurrent {
+	height: 52px !important;
+}
+#playerfinder 
+{
+	display:none;
+	background-color: #555;
+	border:#333 solid 5px;
+	position:absolute;
+	top: 213px;
+	height: 400px;
+	width: 350px;
+	left: 530px;
+}
+.playercss 
+{
+	width: 350px;
+	height: 100%;
+	
+}
+	
