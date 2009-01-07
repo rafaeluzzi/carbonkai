@@ -307,6 +307,19 @@ padding: 5px;
 	height: 400px;
 	width: 350px;
 	left: 530px;
+	z-index: 1 ;
+}
+#playerfinderfav 
+{
+	display:none;
+	background-color: #555;
+	border:#333 solid 5px;
+	position:absolute;
+	top: 213px;
+	height: 400px;
+	width: 350px;
+	left: 530px;
+	
 }
 .playercss 
 {
@@ -314,4 +327,28 @@ padding: 5px;
 	height: 100%;
 	
 }
+.PFiframe
+{
+	width: 350px;
+	height: 100%;
+	overflow:auto;
 	
+}
+	.btnplayerfinder {
+		float:right;
+		background: #555;
+        border: medium double #444;
+		color: #AAAAAA;
+	}
+	#PFtitle {
+		background:#222222 no-repeat;
+		font-size:16px;
+		height:45px;
+		padding: 3px;
+	}
+	.tittle
+	{
+		
+		margin-left:50px;
+		margin-top:10px;
+	}

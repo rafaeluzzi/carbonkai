@@ -5,6 +5,13 @@
 // Author XTag : (TC)yasu
 // ---------------------------------------------
 
+
+//loading external files
+
+
+	//Attaching onLoad
+	
+	
 function chatToggle()
 {
 	var curW=$('panelCenter').style.width.replace(/\D+/g,'')*1;
@@ -83,7 +90,16 @@ placeHolder7.appendChild(divTag7);
 //myButton.class = "submenu";
 //placeHolder = document.getElementById("panelLeftB");
 //placeHolder.appendChild(myButton);
-
+//div for the playerfinder fav
+var divTag10 = document.createElement("div");
+divTag10.id = "playerfinderfav";
+divTag10.setAttribute("align","left");
+divTag10.style.margin = "0px auto";
+divTag10.style.display = "none";
+divTag10.innerHTML ="PERRRRRRRRRROOOOOOOOOOO";    
+document.body.appendChild(divTag10);
+	   
+//extra content
 	
 	var divTag = document.createElement("div");
 divTag.id = "div1";
@@ -259,9 +275,9 @@ function switchArenaInit(B){
 divTag6.id = "playerfinder";
 divTag6.setAttribute("align","left");
 divTag6.style.margin = "0px auto";
-    
+  contenidofinder=encodeURI(B);
 document.body.appendChild(divTag6);
-document.getElementById('playerfinder').innerHTML ="<iframe class= 'playercss' src= 'http://playerfinder.crunchbite.org/find_players_ui.php?arenapath="+ B +"'></iframe>";
+document.getElementById('playerfinder').innerHTML ="<iframe class= 'playercss' src= 'http://playerfinder.crunchbite.org/find_players_ui.php?arenapath="+ contenidofinder +"'></iframe>";
 
 
     D += "</div>";
@@ -269,13 +285,33 @@ document.getElementById('playerfinder').innerHTML ="<iframe class= 'playercss' s
         $("arenaCurrent").innerHTML = "General Chat"
     }
     else {
-        $("arenaCurrent").innerHTML = D + '<div id="playerfinderbtn">'+"<input class=\"blackBtn\" type=\"button\" value=\"Player Finder\" onclick=\"toggleLayer('playerfinder');\">" + '</div>'
+        $("arenaCurrent").innerHTML = D + '<div id="playerfinderbtn">'+"<input class=\"btnplayerfinder\" type=\"button\" value=\"Player Finder\" onclick=\"toggleLayer('playerfinder');\">" + '</div>'
     }
     setTimeout("sendToEngine('KAI_CLIENT_CHATMODE	" + (B != "" ? B : "General Chat") + "	');", 200);
     setTimeout("sendToEngine('KAI_CLIENT_GET_VECTORS	" + B + "	');", 200);
     curVector = B;
     updateArenaCommands()
 }
+
+/*function finderfav() {
+	
+
+
+}*/
+function finderfavmulti(G,H) {
+	contenido = encodeURI(G);
+	avatar = H;
+		document.getElementById('playerfinderfav').innerHTML ='<div id="PFtitle"><span class="tittle">Player Finder for '+G+"</span><input class=\"btnplayerfinder\" type=\"button\" value=\"close\" onclick=\"toggleLayer('playerfinderfav');\">"+'</div>';
+	document.getElementById('playerfinderfav').innerHTML +='<div class="PFiframe">'+"<iframe class= 'playercss' src= 'http://playerfinder.crunchbite.org/find_players_ui.php?game="+ contenido +"'></iframe>"+ '</div>';
+	document.getElementById('PFtitle').style.backgroundImage = "url('" + H + "')";
+	//document.getElementById('playerfinderfav').innerHTML=contenido;
+	// "<iframe class= 'playercss' src= 'http://playerfinder.crunchbite.org/find_players_ui.php?arenapath="+ A +"'></iframe>";
+ 	toggleLayer('playerfinderfav');
+	if ($('playerfinder').style.display=='block')
+	{ $('playerfinder').style.display='none';}
+	
+}
+
 function favAdd(A){
     if (favs[A.toLowerCase()]) {
         return
@@ -289,6 +325,7 @@ function favAdd(A){
     var C = objReassign_myNode(favs, A);
     var D = "http://www.teamxlink.co.uk/media/avatars/" + A + ".jpg";
     var B = document.createElement("div");
+  
       B.className = "kaiFavContainer";
       
     B.style.backgroundImage = "url('" + D + "')";
@@ -299,10 +336,13 @@ function favAdd(A){
         this.style.backgroundColor = "#fff"
     };
     
-    B.innerHTML ='<div style="margin-left: 60px;">' + A.substring(A.lastIndexOf("/") + 1)  + '</div><div style="text-align: right;"><a href="#" onclick="favRemove(\'' + A + '\');" return false;><img src="/img/30.png" border="0" title="' + ui_strings.removeFav + '"></a>&nbsp;&nbsp;<a href="#" onclick="switchArena(\'' + A + '\');" return false;><img src="/img/05.png" border="0" title="' + ui_strings.go + '"></a>'+'&nbsp;&nbsp;</div><div style="margin-left: 60px;"><a href= "http://playerfinder.crunchbite.org/find_players_ui.php?arenapath='+ A +'">Find Players</a></div>';
     
+    B.innerHTML ='<div style="margin-left: 60px;">' + A.substring(A.lastIndexOf("/") + 1)  + '</div><div style="text-align: right;"><a href="#" onclick="favRemove(\'' + A + '\');" return false;><img src="/img/30.png" border="0" title="' + ui_strings.removeFav + '"></a>&nbsp;&nbsp;<a href="#" onclick="switchArena(\'' + A + '\');" return false;><img src="/img/05.png" border="0" title="' + ui_strings.go + '"></a>'+'&nbsp;&nbsp;</div><div style="margin-left: 60px;"></div>';
+    B.innerHTML+="<input class=\"btnplayerfinder\" type=\"button\" value=\"find players\" onclick=\"finderfavmulti('"+ A.substring(A.lastIndexOf("/") + 1)+"','"+ D +"');\">";
     
-  
+    // <a href= "http://playerfinder.crunchbite.org/find_players_ui.php?arenapath='+ A +'">Find Players</a>
+  //<input class=\"playerBtn\" type=\"button\" value=\"find players\" onclick=\"toggleLayer('playerfinderfav');\">
+  ///?keepThis=true&TB_iframe=true&height=300&width=500" title="blank" class="smoothbox"
     if ($("kaiFavs").childNodes[C] == null) {
         $("kaiFavs").appendChild(B)
               
@@ -312,5 +352,5 @@ function favAdd(A){
     }
 
 	
-}
 
+}
